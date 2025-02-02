@@ -2,7 +2,7 @@
 const cors = require("cors");
 const express = require("express");
 
-
+const generateFromTranscript = require("./controllers/generateFromTranscriptController")
 // CONFIGURATION
 const app = express();
 
