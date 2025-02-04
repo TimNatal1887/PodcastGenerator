@@ -10,12 +10,13 @@ const app = express();
 app.use(cors());
 
 app.use((req, _res, next) => {
-  console.log("Origin Requested:", req.headers.origin);
-  next();
+    console.log("Origin Requested:", req.headers.origin);
+    next();
 });
 
 app.use(express.json());
 
+app.use("/api/Gemini", generateFromTranscript)
 // ROUTES
 app.get("/", (_req, res) => {
   res.send("Welcome to Firebase Backend Server");

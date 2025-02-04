@@ -1,20 +1,20 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-require("dotenv").config({ path: __dirname + "/../.env" });
-const geminiKey = process.env.GEMINI_API_KEY;
-console.log(geminiKey);
-console.log("Test")
 
-const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-const prompt = "Explain how AI works";
-
-const result = await model.generateContent(prompt);
-console.log(result.response.text());
 const express = require('express')
 const transcript = express.Router()
+const { testCall }= require("../queries/GeminiQueries")
 
 transcript.get("/", async (req,res)=>{
-    
-
+    try {
+        const testResponse = await testCall(req.body);
+        if(testResponse){
+            res.status(200).json({messageReceived:req.body})
+        }else{
+            res.status(404).json({error:"Message not received"})
+        }
+        
+    } catch (error) {
+        res.status(500).json({error:"Internal server error"})
+    }
 })
+
+module.exports = transcript
