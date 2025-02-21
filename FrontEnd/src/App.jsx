@@ -2,40 +2,40 @@ import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import "./App.css";
 
+
 const App = () => {
   const [audioFile, setAudioFile] = useState(null);
   const [audioURL, setAudioURL] = useState(null);
+  const API = import.meta.env.VITE_BASE_URL
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log(file)
     if (file) {
       setAudioFile(file);
-      const fileURL = URL.createObjectURL(file);
-      setAudioURL(fileURL);
     }
   };
 
-  const handleSubmit = () => {
-  //   if (audioFile) {
-  //     const formData = new FormData();
-  //     formData.append('audio', audioFile);
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (audioFile) {
+      const formData = new FormData();
+      formData.append('audio', audioFile);
 
-  //     // Example: Sending the file to a backend API
-  //     fetch('https://your-backend-api.com/upload', {
-  //       method: 'POST',
-  //       body: formData,
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         console.log('File uploaded successfully:', data);
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error uploading file:', error);
-  //       });
-  //   } else {
-  //     alert('Please select an audio file before submitting.');
-  //   }
+      // Example: Sending the file to a backend API
+      fetch(`${API}/api/Gemini`, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('File uploaded successfully:', data);
+        })
+        .catch((error) => {
+          console.error('Error uploading file:', error);
+        });
+    } else {
+      alert('Please select an audio file before submitting.');
+    }
   };
 
   return (
@@ -44,7 +44,8 @@ const App = () => {
         path="/" 
         element={
           <div className='page-wrap'>
-            {/* {console.log(audioFile)} */}
+            {/* {console.log(audioFile)}
+            {console.log(`checking url: ${audioURL}`)} */}
             <h1 className='text-2xl font-bold text-center mb-4'>Podcast Generator</h1>
             <div className='max-w-xl mx-auto p-4 bg-white shadow-md rounded-lg'>
               <textarea 
