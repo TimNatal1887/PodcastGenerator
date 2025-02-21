@@ -23,7 +23,7 @@ transcript.post("/", upload.single("audio"), async (req, res) => {
     const transcriptResponse = await getTranscriptFromAudioFile(tempFilePath, req.file.mimetype, req.file.originalname);
 
     // // After processing, delete the temporary file
-    // fs.unlinkSync(tempFilePath);
+    fs.unlinkSync(tempFilePath);
 
     if (transcriptResponse) {
       res.status(200).json({ transcript: transcriptResponse });
